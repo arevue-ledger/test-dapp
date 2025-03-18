@@ -1,0 +1,122 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>E2E Test Dapp</title>
+    <link rel="icon" type="image/svg" href="metamask-fox.svg" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.14.1/css/mdb.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" type="text/css" />
+  </head>
+
+  <body>
+    <main class="container-fluid">
+      <header>
+        <div id="logo-container">
+          <h1 id="logo-text" class="text-center">
+            E2E Test Dapp
+          </h1>
+
+          <img id="mm-logo" src="metamask-fox.svg" />
+        </div>
+      </header>
+      <section>
+        <h3 class="card-title">
+          Provider
+        </h3>
+        <div id="eip6963Warning" class="row justify-content-center">
+          <div class="warning-message justify-content-center col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <img
+              src="warning.svg"
+              alt=""
+              class="warning-message-icon
+              "
+            />
+            <div class="warning-message-text">No EIP-6963 Provider Detected</div>
+          </div>
+        </div>
+        <div class="row" id="eip6963" hidden>
+          <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="card eip6963-providers">
+              <div class="card-body">
+                <h4 class="card-title">
+                  EIP 6963
+                </h4>
+                  <div class='row' id="providers">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  Active Provider
+                </h4>
+                <p class="info-text alert alert-secondary">
+                  UUID: <span id="activeProviderUUID"></span>
+                </p>
+                <p class="info-text alert alert-secondary">
+                  Name: <span id="activeProviderName"></span>
+                </p>
+                <p class="info-text alert alert-secondary">
+                  Icon: <span id="activeProviderIcon"></span>
+                </p>
+              </div>
+            </div>
+              <button
+              class="btn btn-primary btn-lg btn-block mb-3"
+              id="useWindowProviderButton"
+            >
+              Use window.ethereum
+          </div>
+      </section>
+      <section>
+        <h3 class="card-title">
+          Status
+        </h3>
+        <div id="warning" class="row justify-content-center error-div">
+          <div class="error-message justify-content-center col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <img
+              src="alert-red.svg"
+              alt=""
+              class="error-message-icon
+              "
+            />
+            <div class="error-message-text">You are on the Ethereum Mainnet.</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <p class="info-text alert alert-primary">
+              Network: <span id="network"></span>
+            </p>
+          </div>
+
+          <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <p class="info-text alert alert-secondary">
+              ChainId: <span id="chainId"></span>
+            </p>
+          </div>
+
+          <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <p class="info-text alert alert-success">
+              Accounts: <span id="accounts"></span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="main.js" defer></script>
+  </body>
+</html>
