@@ -1,0 +1,6 @@
+{
+    "scripts": {
+      "@lavamoat/preinstall-always-fail": true,
+      "some-other-package": true
+    }
+  }
