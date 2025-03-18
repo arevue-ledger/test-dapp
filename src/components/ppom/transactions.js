@@ -85,11 +85,27 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
           >
             Malicious Seaport
           </button>
+          <h5>Ledger Test Cases</h5>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="malicious1InchOrder"
+            disabled
+          >
+            Malicious 1Inch Order
+          </button>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="maliciousSafeMessage"
+            disabled
+          >
+            Malicious Safe Message
+          </button>
         </div>
       </div>
     </div>`,
   );
 
+  // AREARE : add new buttons here
   const maliciousRawEthButton = document.getElementById(
     'maliciousRawEthButton',
   );
@@ -106,9 +122,13 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
   const maliciousSetApprovalForAll = document.getElementById(
     'maliciousSetApprovalForAll',
   );
+
+  // Signatures
   const maliciousPermit = document.getElementById('maliciousPermit');
   const maliciousTradeOrder = document.getElementById('maliciousTradeOrder');
   const maliciousSeaport = document.getElementById('maliciousSeaport');
+  const malicious1InchOrder = document.getElementById('malicious1InchOrder');
+  const maliciousSafeMessage = document.getElementById('maliciousSafeMessage');
 
   document.addEventListener('globalConnectionChange', function (e) {
     if (e.detail.connected) {
@@ -122,6 +142,9 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       maliciousPermit.disabled = false;
       maliciousTradeOrder.disabled = false;
       maliciousSeaport.disabled = false;
+      // AREARE
+      malicious1InchOrder.disabled = false;
+      maliciousSafeMessage.disabled = false;
     }
   });
 
@@ -135,6 +158,9 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     maliciousPermit.disabled = true;
     maliciousTradeOrder.disabled = true;
     maliciousSeaport.disabled = true;
+    // AREARE
+    malicious1InchOrder.disabled = true;
+    maliciousSafeMessage.disabled = true;
   });
 
   document.addEventListener('newNetwork', function (e) {
@@ -293,6 +319,90 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     console.log(result);
   };
 
+  // Malicious 1Inch Order
+  malicious1InchOrder.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_signTypedData_v4',
+      params: [
+        globalContext.accounts[0],
+        `{
+    "primaryType": "Order",
+    "types": {
+        "EIP712Domain": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "version",
+                "type": "string"
+            },
+            {
+                "name": "chainId",
+                "type": "uint256"
+            },
+            {
+                "name": "verifyingContract",
+                "type": "address"
+            }
+        ],
+        "Order": [
+            {
+                "name": "salt",
+                "type": "uint256"
+            },
+            {
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "name": "makerAsset",
+                "type": "address"
+            },
+            {
+                "name": "takerAsset",
+                "type": "address"
+            },
+            {
+                "name": "makingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "takingAmount",
+                "type": "uint256"
+            },
+            {
+                "name": "makerTraits",
+                "type": "uint256"
+            }
+        ]
+    },
+    "domain": {
+        "name": "1inch Aggregation Router",
+        "version": "6",
+        "chainId": 1,
+        "verifyingContract": "0x111111125421ca6dc452d289314280a0f8842a65"
+    },
+    "message": {
+        "maker": "0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9",
+        "makerAsset": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "takerAsset": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "makerTraits": "62419173104490761595518734106350460423737843278013141091896793745170907529216",
+        "salt": "102412815616154893501306849590120450259292503969437846241830792407351257425192",
+        "makingAmount": "55523067",
+        "takingAmount": "54730145",
+        "receiver": "0x0fa09c3a328792253f8dee7116848723b72a6d2e"
+    }
+}`,
+      ],
+    });
+    console.log(result);
+  };
+
   // Malicious Seaport
   maliciousSeaport.onclick = async () => {
     const result = await globalContext.provider.request({
@@ -304,4 +414,16 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     });
     console.log(result);
   };
+
+  maliciousSafeMessage.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_signTypedData_v4',
+      params: [
+        globalContext.accounts[0],
+        `{   "types": {     "SafeTx": [       {         "type": "address",         "name": "to"       },       {         "type": "uint256",         "name": "value"       },       {         "type": "bytes",         "name": "data"       },       {         "type": "uint8",         "name": "operation"       },       {         "type": "uint256",         "name": "safeTxGas"       },       {         "type": "uint256",         "name": "baseGas"       },       {         "type": "uint256",         "name": "gasPrice"       },       {         "type": "address",         "name": "gasToken"       },       {         "type": "address",         "name": "refundReceiver"       },       {         "type": "uint256",         "name": "nonce"       }     ],     "EIP712Domain": [       {         "name": "chainId",         "type": "uint256"       },       {         "name": "verifyingContract",         "type": "address"       }     ]   },   "domain": {     "chainId": "1",     "verifyingContract": "0x1Db92e2EeBC8E0c075a02BeA49a2935BcD2dFCF4"   },   "primaryType": "SafeTx",   "message": {     "to": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",     "value": "0",     "data": "0x6a76120200000000000000000000000096221423681a6d52e184d440a8efcebb105c7242000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000b2b2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bdd077f651ebe7f7b3ce16fe5f2b025be296951600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3d0afef78a52fd504479dc2af3dc401334762cbd05609c7ac18db9ec5abf4a07a5cc09fc86efd3489707b89b0c729faed616459189cb50084f208d03b201b001f1f0f62ad358d6b319d3c1221d44456080068fe02ae5b1a39b4afb1e6721ca7f9903ac523a801533f265231cd35fc2dfddc3bd9a9563b51315cf9d5ff23dc6d2c221fdf9e4b878877a8dbeee951a4a31ddbf1d3b71e127d5eda44b4730030114baba52e06dd23da37cd2a07a6e84f9950db867374a0f77558f42adf4409bfd569673c1f0000000000000000000000000000000000000000000000000000000000",     "operation": "1",     "safeTxGas": "45746",     "baseGas": "0",     "gasPrice": "0",     "gasToken": "0x0000000000000000000000000000000000000000",     "refundReceiver": "0x0000000000000000000000000000000000000000",     "nonce": "28"   } }`,
+      ],
+    });
+    console.log(result);
+  };
+
 }
