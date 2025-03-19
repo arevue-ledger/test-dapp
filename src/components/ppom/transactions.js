@@ -100,6 +100,42 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
           >
             Malicious Safe Message
           </button>
+          <h5>AAVE</h5>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="benignAaveSupply"
+            disabled
+          >
+            Benign Aave Supply
+          </button>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="benignAaveBorrow"
+            disabled
+          >
+            Benign Aave Borrow
+          </button>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="benignAaveWithdraw"
+            disabled
+          >
+            Benign Aave Withdraw
+          </button>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="benignAavePermitStaking"
+            disabled
+          >
+            Benign Aave Permit (Staking)
+          </button>
+          <button
+            class="btn btn-primary btn-lg btn-block mb-3"
+            id="benignAaveStaking"
+            disabled
+          >
+            Benign Aave Staking
+          </button>
         </div>
       </div>
     </div>`,
@@ -129,6 +165,13 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
   const maliciousSeaport = document.getElementById('maliciousSeaport');
   const malicious1InchOrder = document.getElementById('malicious1InchOrder');
   const maliciousSafeMessage = document.getElementById('maliciousSafeMessage');
+  const benignAaveSupply = document.getElementById('benignAaveSupply');
+  const benignAaveBorrow = document.getElementById('benignAaveBorrow');
+  const benignAaveWithdraw = document.getElementById('benignAaveWithdraw');
+  const benignAavePermitStaking = document.getElementById(
+    'benignAavePermitStaking',
+  );
+  const benignAaveStaking = document.getElementById('benignAaveStaking');
 
   document.addEventListener('globalConnectionChange', function (e) {
     if (e.detail.connected) {
@@ -145,6 +188,11 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       // AREARE
       malicious1InchOrder.disabled = false;
       maliciousSafeMessage.disabled = false;
+      benignAaveSupply.disabled = false;
+      benignAaveBorrow.disabled = false;
+      benignAaveWithdraw.disabled = false;
+      benignAaveStaking.disabled = false;
+      benignAavePermitStaking.disabled = false;
     }
   });
 
@@ -161,6 +209,11 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     // AREARE
     malicious1InchOrder.disabled = true;
     maliciousSafeMessage.disabled = true;
+    benignAaveSupply.disabled = true;
+    benignAaveBorrow.disabled = true;
+    benignAaveWithdraw.disabled = true;
+    benignAaveStaking.disabled = true;
+    benignAavePermitStaking.disabled = true;
   });
 
   document.addEventListener('newNetwork', function (e) {
@@ -426,4 +479,88 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     console.log(result);
   };
 
+  // Benign Aave Supply
+  benignAaveSupply.onclick = async () => {
+    const contractAddress =
+      MALICIOUS_CONTRACT_ADDRESSES[globalContext.networkName] ||
+      MALICIOUS_CONTRACT_ADDRESSES.default;
+
+    const result = await globalContext.provider.request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: globalContext.accounts[0],
+          // to: contractAddress,
+          to: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+          data: '0x617ba037000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000001c9c3800000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d90000000000000000000000000000000000000000000000000000000000000000',
+          value: '0x0',
+        },
+      ],
+    });
+    console.log(result);
+  };
+
+
+  // Benign Aave Borrow
+  benignAaveBorrow.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: globalContext.accounts[0],
+          // to: contractAddress,
+          to: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+          data: '0xa415bcad0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca000000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+          value: '0x0',
+        },
+      ],
+    });
+    console.log(result);
+  };
+
+  // Benign Aave Withdraw
+  benignAaveWithdraw.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: globalContext.accounts[0],
+          // to: contractAddress,
+          to: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+          data: '0x69328dec000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+          value: '0x0',
+        },
+      ],
+    });
+    console.log(result);
+  };
+
+  // Benign Aave Permit Staking
+  benignAavePermitStaking.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_signTypedData_v4',
+      params: [
+        globalContext.accounts[0],
+        `{ "types": { "EIP712Domain": [ { "name": "name", "type": "string" }, { "name": "version", "type": "string" }, { "name": "chainId", "type": "uint256" }, { "name": "verifyingContract", "type": "address" } ], "Permit": [ { "name": "owner", "type": "address" }, { "name": "spender", "type": "address" }, { "name": "value", "type": "uint256" }, { "name": "nonce", "type": "uint256" }, { "name": "deadline", "type": "uint256" } ] }, "primaryType": "Permit", "domain": { "name": "Aave token V3", "version": "2", "chainId": "1", "verifyingContract": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9" }, "message": { "owner": "0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9", "spender": "0x4da27a545c0c5b758a6ba100e3a049001de870f5", "value": "100000000000000000", "nonce": "0", "deadline": "1732787332" } }`,
+      ],
+    });
+    console.log(result);
+  };
+
+  // Benign Aave Staking
+  benignAaveStaking.onclick = async () => {
+    const result = await globalContext.provider.request({
+      method: 'eth_sendTransaction',
+      params: [
+        {
+          from: globalContext.accounts[0],
+          // to: contractAddress,
+          to: '0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2',
+          data: '0xecd9ba82000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000000000000067483c84000000000000000000000000000000000000000000000000000000000000001cb713bafe29aa71b13b7296f108808f51afa0ba8bcfe1cf0ad375e1d061f873a06407be64d853d33fc16991f4b53a11f0c5ca21d4e0ecce915ec49e9b0eb93cc3',
+          value: '0x0',
+        },
+      ],
+    });
+    console.log(result);
+  };
 }
