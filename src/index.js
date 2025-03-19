@@ -153,6 +153,15 @@ const warningDiv = document.getElementById('warning');
 const mainContainer =
   document.body.getElementsByTagName('main')[0] || document.body;
 
+const ppomSection = document.createElement('section');
+mainContainer.appendChild(ppomSection);
+const ppomRow = document.createElement('div');
+ppomRow.className = 'row';
+ppomSection.appendChild(ppomRow);
+ppomMaliciousTransactionsAndSignatures(ppomRow);
+ppomMaliciousBatchingAndQueueing(ppomRow);
+ppomMaliciousWarningBypasses(ppomRow);
+
 const connectionsSection = document.createElement('section');
 mainContainer.appendChild(connectionsSection);
 const connectionsRow = document.createElement('div');
@@ -177,15 +186,6 @@ erc721Component(transactionsRow);
 erc1155Component(transactionsRow);
 eip747Component(transactionsRow);
 eip5792Component(transactionsRow);
-
-const ppomSection = document.createElement('section');
-mainContainer.appendChild(ppomSection);
-const ppomRow = document.createElement('div');
-ppomRow.className = 'row';
-ppomSection.appendChild(ppomRow);
-ppomMaliciousTransactionsAndSignatures(ppomRow);
-ppomMaliciousBatchingAndQueueing(ppomRow);
-ppomMaliciousWarningBypasses(ppomRow);
 
 const encryptionSection = document.createElement('section');
 mainContainer.appendChild(encryptionSection);
