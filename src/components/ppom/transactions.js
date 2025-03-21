@@ -380,7 +380,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       buttons: ['maliciousPermit', 'maliciousTradeOrder', 'maliciousSeaport'],
     },
     {
-      title: 'Ledger Test Cases',
+      title: 'Safe',
       buttons: ['maliciousSafeMessage'],
     },
     {
