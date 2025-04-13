@@ -1,5 +1,6 @@
 // Contracts for Malicious Transactions in different chains
 export const NETWORKS_BY_CHAIN_ID = {
+  1: 'mainnet',
   137: 'polygon',
   10: 'optimism',
   56: 'bsc',
@@ -11,6 +12,7 @@ export const NETWORKS_BY_CHAIN_ID = {
 };
 
 export const ERC20_SAMPLE_CONTRACTS = {
+  mainnet: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
   polygon: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
   optimism: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
   bsc: '0x8965349fb649A33a30cbFDa057D8eC2C48AbE2A2',
