@@ -58,6 +58,9 @@ const buttonConfigs = {
   maliciousRawEth: {
     id: 'maliciousRawEthButton',
     title: 'Malicious Eth Transfer',
+    clearsignable: true,
+    riskLevel: 'Threat',
+    comments: '(0.00001 ETH)',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: maliciousAddress,
@@ -81,6 +84,9 @@ const buttonConfigs = {
   maliciousERC20Transfer: {
     id: 'maliciousERC20TransferButton',
     title: 'Malicious ERC20 Transfer (USDC)',
+    clearsignable: true,
+    riskLevel: 'Threat',
+    comments: '',
     tooltip: 'This will only be flagged if you have some ERC20 balance',
     onClick: () =>
       transactionUtils.sendTransaction({
@@ -264,7 +270,7 @@ const buttonConfigs = {
     title: 'Malicious Safe Message',
     onClick: () =>
       transactionUtils.signTypedData(
-        `{   "types": {     "SafeTx": [       {         "type": "address",         "name": "to"       },       {         "type": "uint256",         "name": "value"       },       {         "type": "bytes",         "name": "data"       },       {         "type": "uint8",         "name": "operation"       },       {         "type": "uint256",         "name": "safeTxGas"       },       {         "type": "uint256",         "name": "baseGas"       },       {         "type": "uint256",         "name": "gasPrice"       },       {         "type": "address",         "name": "gasToken"       },       {         "type": "address",         "name": "refundReceiver"       },       {         "type": "uint256",         "name": "nonce"       }     ],     "EIP712Domain": [       {         "name": "chainId",         "type": "uint256"       },       {         "name": "verifyingContract",         "type": "address"       }     ]   },   "domain": {     "chainId": ${globalContext.chainIdInt},     "verifyingContract": "0x1Db92e2EeBC8E0c075a02BeA49a2935BcD2dFCF4"   },   "primaryType": "SafeTx",   "message": {     "to": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",     "value": "0",     "data": "0x6a76120200000000000000000000000096221423681a6d52e184d440a8efcebb105c7242000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000b2b200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bdd077f651ebe7f7b3ce16fe5f2b025be296951600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3d0afef78a52fd504479dc2af3dc401334762cbd05609c7ac18db9ec5abf4a07a5cc09fc86efd3489707b89b0c729faed616459189cb50084f208d03b201b001f1f0f62ad358d6b319d3c1221d44456080068fe02ae5b1a39b4afb1e6721ca7f9903ac523a801533f265231cd35fc2dfddc3bd9a9563b51315cf9d5ff23dc6d2c221fdf9e4b878877a8dbeee951a4a31ddbf1d3b71e127d5eda44b4730030114baba52e06dd23da37cd2a07a6e84f9950db867374a0f77558f42adf4409bfd569673c1f0000000000000000000000000000000000000000000000000000000000",     "operation": "1",     "safeTxGas": "45746",     "baseGas": "0",     "gasPrice": "0",     "gasToken": "0x0000000000000000000000000000000000000000",     "refundReceiver": "0x0000000000000000000000000000000000000000",     "nonce": "28"   } }`,
+        `{   "types": {     "SafeTx": [       {         "type": "address",         "name": "to"       },       {         "type": "uint256",         "name": "value"       },       {         "type": "bytes",         "name": "data"       },       {         "type": "uint8",         "name": "operation"       },       {         "type": "uint256",         "name": "safeTxGas"       },       {         "type": "uint256",         "name": "baseGas"       },       {         "type": "uint256",         "name": "gasPrice"       },       {         "type": "address",         "name": "gasToken"       },       {         "type": "address",         "name": "refundReceiver"       },       {         "type": "uint256",         "name": "nonce"       }     ],     "EIP712Domain": [       {         "name": "chainId",         "type": "uint256"       },       {         "name": "verifyingContract",         "type": "address"       }     ]   },   "domain": {     "chainId": ${globalContext.chainIdInt},     "verifyingContract": "0x1Db92e2EeBC8E0c075a02BeA49a2935BcD2dFCF4"   },   "primaryType": "SafeTx",   "message": {     "to": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",     "value": "0",     "data": "0x6a76120200000000000000000000000096221423681a6d52e184d440a8efcebb105c7242000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000b2b2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bdd077f651ebe7f7b3ce16fe5f2b025be296951600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3d0afef78a52fd504479dc2af3dc401334762cbd05609c7ac18db9ec5abf4a07a5cc09fc86efd3489707b89b0c729faed616459189cb50084f208d03b201b001f1f0f62ad358d6b319d3c1221d44456080068fe02ae5b1a39b4afb1e6721ca7f9903ac523a801533f265231cd35fc2dfddc3bd9a9563b51315cf9d5ff23dc6d2c221fdf9e4b878877a8dbeee951a4a31ddbf1d3b71e127d5eda44b4730030114baba52e06dd23da37cd2a07a6e84f9950db867374a0f77558f42adf4409bfd569673c1f0000000000000000000000000000000000000000000000000000000000",     "operation": "1",     "safeTxGas": "45746",     "baseGas": "0",     "gasPrice": "0",     "gasToken": "0x0000000000000000000000000000000000000000",     "refundReceiver": "0x0000000000000000000000000000000000000000",     "nonce": "28"   } }`,
       ),
   },
   // AAVE
@@ -1239,19 +1245,52 @@ const buttonConfigs = {
 
 // Fonction pour créer un bouton
 function createButton(config) {
+  const buttonContainer = document.createElement('div');
+  buttonContainer.className = 'mb-3';
+
   const button = document.createElement('button');
-  button.className = 'btn btn-primary btn-lg btn-block mb-3';
+  button.className = 'btn btn-primary btn-lg btn-block';
   button.id = config.id;
   button.textContent = config.title;
   button.disabled = true;
-  if (config.tooltip) {
-    button.title = config.tooltip;
+
+  const commentsContainer = document.createElement('div');
+  commentsContainer.className = 'mt-2 small text-muted';
+
+  if (config.clearsignable !== undefined) {
+    const clearsignableText = document.createElement('div');
+    clearsignableText.textContent = `Clearsignable: ${config.clearsignable}`;
+    commentsContainer.appendChild(clearsignableText);
   }
+  
+  if (config.riskLevel) {
+    const riskLevelText = document.createElement('div');
+    riskLevelText.textContent = `Risk Level: ${config.riskLevel}`;
+    commentsContainer.appendChild(riskLevelText);
+  }
+
+  if (config.comments) {
+    const commentsText = document.createElement('div');
+    commentsText.textContent = config.comments;
+    commentsContainer.appendChild(commentsText);
+  }
+
+  if (config.tooltip) {
+    const tooltipText = document.createElement('div');
+    tooltipText.textContent = config.tooltip;
+    commentsContainer.appendChild(tooltipText);
+  }
+
+  buttonContainer.appendChild(button);
+  if (commentsContainer.children.length > 0) {
+    buttonContainer.appendChild(commentsContainer);
+  }
+
   if (config.hidden) {
-    button.hidden = true;
+    buttonContainer.hidden = true;
   }
   button.onclick = config.onClick;
-  return button;
+  return buttonContainer;
 }
 
 // Fonction pour créer une section de boutons
