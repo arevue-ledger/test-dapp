@@ -5,7 +5,9 @@ import {
   ERC721_SAMPLE_CONTRACTS,
   MALICIOUS_CONTRACT_ADDRESSES,
   BENIGN_CONTRACT_ADDRESSES,
+  NETWORKS_BY_CHAIN_ID,
 } from '../../onchain-sample-contracts';
+
 import { isBaseNetworkId, isSepoliaNetworkId } from '../../utils';
 
 // Fonctions utilitaires pour les transactions
@@ -58,6 +60,9 @@ const buttonConfigs = {
   maliciousRawEth: {
     id: 'maliciousRawEthButton',
     title: 'Malicious Eth Transfer',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
+    comments: '(0.00001 ETH)',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: maliciousAddress,
@@ -81,6 +86,9 @@ const buttonConfigs = {
   maliciousERC20Transfer: {
     id: 'maliciousERC20TransferButton',
     title: 'Malicious ERC20 Transfer (USDC)',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
+    comments: '',
     tooltip: 'This will only be flagged if you have some ERC20 balance',
     onClick: () =>
       transactionUtils.sendTransaction({
@@ -98,18 +106,25 @@ const buttonConfigs = {
   maliciousApproval: {
     id: 'maliciousApprovalButton',
     title: 'Malicious ERC20 Approval (BUSD)',
-    onClick: () =>
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
+    comments: '',
+    onClick: () => {
       transactionUtils.sendTransaction({
         to: transactionUtils.getContractAddress(
           globalContext.networkName,
           'erc20',
         ),
         data: '0x095ea7b3000000000000000000000000e50a2dbc466d01a34c3e8b7e8e45fce4f7da39e6000000000000000000000000000000000000000000000000ffffffffffffffff',
-      }),
+      });
+    },
   },
+
   maliciousContractInteraction: {
     id: 'maliciousContractInteractionButton',
     title: 'Malicious Contract Interaction',
+    signing: 'Blind Signing',
+    riskLevel: 'Threat',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: transactionUtils.getContractAddress(
@@ -123,6 +138,8 @@ const buttonConfigs = {
   maliciousSetApprovalForAll: {
     id: 'maliciousSetApprovalForAll',
     title: 'Malicious Set Approval For All',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
     onClick: () =>
       transactionUtils.sendTransaction(
         /*
@@ -160,6 +177,8 @@ const buttonConfigs = {
   maliciousPermit: {
     id: 'maliciousPermit',
     title: 'Malicious Permit',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
     onClick: () =>
       transactionUtils.signTypedData(
         `{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Permit":[{"name":"owner","type":"address"},{"name":"spender","type":"address"},{"name":"value","type":"uint256"},{"name":"nonce","type":"uint256"},{"name":"deadline","type":"uint256"}]},"primaryType":"Permit","domain":{"name":"USD Coin","verifyingContract":"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48","chainId":${globalContext.chainIdInt},"version":"2"},"message":{"owner":"${globalContext.accounts[0]}","spender":"0x1661F1B207629e4F385DA89cFF535C8E5Eb23Ee3","value":"1033366316628","nonce":1,"deadline":1678709555}}`,
@@ -168,14 +187,138 @@ const buttonConfigs = {
   maliciousTradeOrder: {
     id: 'maliciousTradeOrder',
     title: 'Malicious Trade Order',
+    signing: 'Blind Signing',
+    riskLevel: 'Threat',
+    comments: '!!! Detected with Metamask (A known malicious address is involved in the transaction), not Rabby',
     onClick: () =>
       transactionUtils.signTypedData(
         `{"types":{"ERC721Order":[{"type":"uint8","name":"direction"},{"type":"address","name":"maker"},{"type":"address","name":"taker"},{"type":"uint256","name":"expiry"},{"type":"uint256","name":"nonce"},{"type":"address","name":"erc20Token"},{"type":"uint256","name":"erc20TokenAmount"},{"type":"Fee[]","name":"fees"},{"type":"address","name":"erc721Token"},{"type":"uint256","name":"erc721TokenId"},{"type":"Property[]","name":"erc721TokenProperties"}],"Fee":[{"type":"address","name":"recipient"},{"type":"uint256","name":"amount"},{"type":"bytes","name":"feeData"}],"Property":[{"type":"address","name":"propertyValidator"},{"type":"bytes","name":"propertyData"}],"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}]},"domain":{"name":"ZeroEx","version":"1.0.0","chainId":"${globalContext.chainIdInt}","verifyingContract":"0xdef1c0ded9bec7f1a1670819833240f027b25eff"},"primaryType":"ERC721Order","message":{"direction":"0","maker":"${globalContext.accounts[0]}","taker":"${maliciousAddress}","expiry":"2524604400","nonce":"100131415900000000000000000000000000000083840314483690155566137712510085002484","erc20Token":"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2","erc20TokenAmount":"42000000000000","fees":[],"erc721Token":"0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e","erc721TokenId":"2516","erc721TokenProperties":[]}}`,
       ),
   },
+  maliciousSeaport: {
+    id: 'maliciousSeaport',
+    title: 'Malicious Seaport',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
+    onClick: () =>
+      transactionUtils.signTypedData(
+        `{"types":{"OrderComponents":[{"name":"offerer","type":"address"},{"name":"zone","type":"address"},{"name":"offer","type":"OfferItem[]"},{"name":"consideration","type":"ConsiderationItem[]"},{"name":"orderType","type":"uint8"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"zoneHash","type":"bytes32"},{"name":"salt","type":"uint256"},{"name":"conduitKey","type":"bytes32"},{"name":"counter","type":"uint256"}],"OfferItem":[{"name":"itemType","type":"uint8"},{"name":"token","type":"address"},{"name":"identifierOrCriteria","type":"uint256"},{"name":"startAmount","type":"uint256"},{"name":"endAmount","type":"uint256"}],"ConsiderationItem":[{"name":"itemType","type":"uint8"},{"name":"token","type":"address"},{"name":"identifierOrCriteria","type":"uint256"},{"name":"startAmount","type":"uint256"},{"name":"endAmount","type":"uint256"},{"name":"recipient","type":"address"}],"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}]},"domain":{"name":"Seaport","version":"1.1","chainId":${globalContext.chainIdInt},"verifyingContract":"0x00000000006c3852cbef3e08e8df289169ede581"},"primaryType":"OrderComponents","message":{"offerer":"0x5a6f5477bdeb7801ba137a9f0dc39c0599bac994","zone":"0x004c00500000ad104d7dbd00e3ae0a5c00560c00","offer":[{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"26464","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"7779","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"4770","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"9594","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"2118","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"1753","startAmount":"1","endAmount":"1"}],"consideration":[{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"26464","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"7779","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"4770","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"9594","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"2118","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"1753","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"}],"orderType":"2","startTime":"1681810415","endTime":"1681983215","zoneHash":"0x0000000000000000000000000000000000000000000000000000000000000000","salt":"1550213294656772168494388599483486699884316127427085531712538817979596","conduitKey":"0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000","counter":"0"}}`,
+      ),
+  },
+  // AAVE
+  benignAaveSupply: {
+    id: 'benignAaveSupply',
+    title: 'Benign Aave Supply',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
+        to: BENIGN_CONTRACT_ADDRESSES.aave,
+        data: '0x617ba037000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000001c9c3800000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d90000000000000000000000000000000000000000000000000000000000000000',
+      }),
+  },
+  benignAaveBorrow: {
+    id: 'benignAaveBorrow',
+    title: 'Benign Aave Borrow',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        to: BENIGN_CONTRACT_ADDRESSES.aave,
+        data: '0xa415bcad0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca000000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+        value: '0x0',
+        gas: '0x8043b',
+        maxFeePerGas: '0x2faf0800',
+        maxPriorityFeePerGas: '0x2faf0800',
+        nonce: '0x3f',
+      }),
+  },
+
+  benignAaveWithdraw: {
+    id: 'benignAaveWithdraw',
+    title: 'Benign Aave Withdraw',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        to: BENIGN_CONTRACT_ADDRESSES.aave,
+        data: '0x69328dec000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+        value: '0x0',
+        gas: '0x8043b',
+        maxFeePerGas: '0x2faf0800',
+        maxPriorityFeePerGas: '0x2faf0800',
+        nonce: '0x3f',
+      }),
+  },
+  benignAavePermitStaking: {
+    id: 'benignAavePermitStaking',
+    title: 'Benign Aave Permit (Staking)',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.signTypedData(
+        `{ "types": { "EIP712Domain": [ { "name": "name", "type": "string" }, { "name": "version", "type": "string" }, { "name": "chainId", "type": "uint256" }, { "name": "verifyingContract", "type": "address" } ], "Permit": [ { "name": "owner", "type": "address" }, { "name": "spender", "type": "address" }, { "name": "value", "type": "uint256" }, { "name": "nonce", "type": "uint256" }, { "name": "deadline", "type": "uint256" } ] }, "primaryType": "Permit", "domain": { "name": "Aave token V3", "version": "2", "chainId": "${globalContext.chainIdInt}", "verifyingContract": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9" }, "message": { "owner": "0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9", "spender": "0x4da27a545c0c5b758a6ba100e3a049001de870f5", "value": "100000000000000000", "nonce": "0", "deadline": "1732787332" } }`,
+      ),
+  },
+  benignAaveStaking: {
+    id: 'benignAaveStaking',
+    title: 'Benign Aave Staking',
+    signing: 'Blind Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        to: BENIGN_CONTRACT_ADDRESSES.aave,
+        data: '0xecd9ba82000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000000000000067483c84000000000000000000000000000000000000000000000000000000000000001cb713bafe29aa71b13b7296f108808f51afa0ba8bcfe1cf0ad375e1d061f873a06407be64d853d33fc16991f4b53a11f0c5ca21d4e0ecce915ec49e9b0eb93cc3',
+        value: '0x0',
+        gas: '0x2c38e',
+        maxFeePerGas: '0x4190ab00',
+        maxPriorityFeePerGas: '0x4190ab00',
+        nonce: '0x3f',
+      }),
+  },
+  // 1INCH
+  benign1InchClassicSwap: {
+    id: 'benign1InchClassicSwap',
+    title: 'Benign 1Inch Classic Swap',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
+        to: '0x111111125421ca6dc452d289314280a0f8842a65',
+        data: '0xd2d374e5000000000000000000000000655edce464cc797526600a462a8154650eee4b77000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000000000000000000000000000000000000034f36fb00000000000000000000000000000000000000000000000000000000034f36fb000000000000005e97facaf5000000000000003b3fb01f8609c409c467dca52560f830342688ccb20bd1048deb6cd8cf3993307b9702fe13c4ee283cce770bdbcf43a96693b198a29bfe945b764a0bc1fcafdfd678b8df4dd6db6a1d061ff574e26b9977',
+        value: '0x0',
+        gas: '0x2c38e',
+        maxFeePerGas: '0x4190ab00',
+        maxPriorityFeePerGas: '0x4190ab00',
+        nonce: '0x3f',
+      }),
+  },
+
+  malicious1InchClassicSwap: {
+    id: 'malicious1InchClassicSwap',
+    title: 'Malicious 1Inch Classic Swap',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
+        to: '0x111111125421ca6dc452d289314280a0f8842a65',
+        data: '0xc4d652af000000000000000000000000655edce464cc797526600a462a8154650eee4b770000000000000000000000000fa09c3a328792253f8dee7116848723b72a6d2e000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000000000000000000000000000000000000034f36fb00000000000000000000000000000000000000000000000000000000034f36fb000000000000005f2cea620b000000000000003b3fb01f8609c409c467dca3cd0393dc979d3a13a33006093d972ce054760adf8c216d72200054dca990ab8aa649f86b0f3a7c9fd1811cdd304ad1e437bda4aa117dbb4e72de714fff9f753db8e26b9977',
+        value: '0x0',
+        gas: '0x2c38e',
+        maxFeePerGas: '0x4190ab00',
+        maxPriorityFeePerGas: '0x4190ab00',
+        nonce: '0x3f',
+      }),
+  },
+
   malicious1InchOrder: {
     id: 'malicious1InchOrder',
     title: 'Malicious 1Inch Order',
+    signing: 'Clear Signing',
+    riskLevel: 'Threat',
     onClick: () =>
       transactionUtils.signTypedData(`{
     "primaryType": "Order",
@@ -249,117 +392,16 @@ const buttonConfigs = {
         "takingAmount": "54730145",
         "receiver": "0x0fa09c3a328792253f8dee7116848723b72a6d2e"
     }
-}`),
+  }`),
   },
-  maliciousSeaport: {
-    id: 'maliciousSeaport',
-    title: 'Malicious Seaport',
-    onClick: () =>
-      transactionUtils.signTypedData(
-        `{"types":{"OrderComponents":[{"name":"offerer","type":"address"},{"name":"zone","type":"address"},{"name":"offer","type":"OfferItem[]"},{"name":"consideration","type":"ConsiderationItem[]"},{"name":"orderType","type":"uint8"},{"name":"startTime","type":"uint256"},{"name":"endTime","type":"uint256"},{"name":"zoneHash","type":"bytes32"},{"name":"salt","type":"uint256"},{"name":"conduitKey","type":"bytes32"},{"name":"counter","type":"uint256"}],"OfferItem":[{"name":"itemType","type":"uint8"},{"name":"token","type":"address"},{"name":"identifierOrCriteria","type":"uint256"},{"name":"startAmount","type":"uint256"},{"name":"endAmount","type":"uint256"}],"ConsiderationItem":[{"name":"itemType","type":"uint8"},{"name":"token","type":"address"},{"name":"identifierOrCriteria","type":"uint256"},{"name":"startAmount","type":"uint256"},{"name":"endAmount","type":"uint256"},{"name":"recipient","type":"address"}],"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}]},"domain":{"name":"Seaport","version":"1.1","chainId":${globalContext.chainIdInt},"verifyingContract":"0x00000000006c3852cbef3e08e8df289169ede581"},"primaryType":"OrderComponents","message":{"offerer":"0x5a6f5477bdeb7801ba137a9f0dc39c0599bac994","zone":"0x004c00500000ad104d7dbd00e3ae0a5c00560c00","offer":[{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"26464","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"7779","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"4770","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"9594","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"2118","startAmount":"1","endAmount":"1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"1753","startAmount":"1","endAmount":"1"}],"consideration":[{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"26464","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"7779","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0x60e4d786628fea6478f785a6d7e704777c86a7c6","identifierOrCriteria":"4770","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"9594","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"2118","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"},{"itemType":"2","token":"0xba30e5f9bb24caa003e9f2f0497ad287fdf95623","identifierOrCriteria":"1753","startAmount":"1","endAmount":"1","recipient":"0xdfdc0b1cf8e9950d6a860af6501c4fecf7825cc1"}],"orderType":"2","startTime":"1681810415","endTime":"1681983215","zoneHash":"0x0000000000000000000000000000000000000000000000000000000000000000","salt":"1550213294656772168494388599483486699884316127427085531712538817979596","conduitKey":"0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000","counter":"0"}}`,
-      ),
-  },
+
   maliciousSafeMessage: {
     id: 'maliciousSafeMessage',
     title: 'Malicious Safe Message',
     onClick: () =>
       transactionUtils.signTypedData(
-        `{   "types": {     "SafeTx": [       {         "type": "address",         "name": "to"       },       {         "type": "uint256",         "name": "value"       },       {         "type": "bytes",         "name": "data"       },       {         "type": "uint8",         "name": "operation"       },       {         "type": "uint256",         "name": "safeTxGas"       },       {         "type": "uint256",         "name": "baseGas"       },       {         "type": "uint256",         "name": "gasPrice"       },       {         "type": "address",         "name": "gasToken"       },       {         "type": "address",         "name": "refundReceiver"       },       {         "type": "uint256",         "name": "nonce"       }     ],     "EIP712Domain": [       {         "name": "chainId",         "type": "uint256"       },       {         "name": "verifyingContract",         "type": "address"       }     ]   },   "domain": {     "chainId": ${globalContext.chainIdInt},     "verifyingContract": "0x1Db92e2EeBC8E0c075a02BeA49a2935BcD2dFCF4"   },   "primaryType": "SafeTx",   "message": {     "to": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",     "value": "0",     "data": "0x6a76120200000000000000000000000096221423681a6d52e184d440a8efcebb105c7242000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000b2b200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bdd077f651ebe7f7b3ce16fe5f2b025be296951600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3d0afef78a52fd504479dc2af3dc401334762cbd05609c7ac18db9ec5abf4a07a5cc09fc86efd3489707b89b0c729faed616459189cb50084f208d03b201b001f1f0f62ad358d6b319d3c1221d44456080068fe02ae5b1a39b4afb1e6721ca7f9903ac523a801533f265231cd35fc2dfddc3bd9a9563b51315cf9d5ff23dc6d2c221fdf9e4b878877a8dbeee951a4a31ddbf1d3b71e127d5eda44b4730030114baba52e06dd23da37cd2a07a6e84f9950db867374a0f77558f42adf4409bfd569673c1f0000000000000000000000000000000000000000000000000000000000",     "operation": "1",     "safeTxGas": "45746",     "baseGas": "0",     "gasPrice": "0",     "gasToken": "0x0000000000000000000000000000000000000000",     "refundReceiver": "0x0000000000000000000000000000000000000000",     "nonce": "28"   } }`,
+        `{   "types": {     "SafeTx": [       {         "type": "address",         "name": "to"       },       {         "type": "uint256",         "name": "value"       },       {         "type": "bytes",         "name": "data"       },       {         "type": "uint8",         "name": "operation"       },       {         "type": "uint256",         "name": "safeTxGas"       },       {         "type": "uint256",         "name": "baseGas"       },       {         "type": "uint256",         "name": "gasPrice"       },       {         "type": "address",         "name": "gasToken"       },       {         "type": "address",         "name": "refundReceiver"       },       {         "type": "uint256",         "name": "nonce"       }     ],     "EIP712Domain": [       {         "name": "chainId",         "type": "uint256"       },       {         "name": "verifyingContract",         "type": "address"       }     ]   },   "domain": {     "chainId": ${globalContext.chainIdInt},     "verifyingContract": "0x1Db92e2EeBC8E0c075a02BeA49a2935BcD2dFCF4"   },   "primaryType": "SafeTx",   "message": {     "to": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",     "value": "0",     "data": "0x6a76120200000000000000000000000096221423681a6d52e184d440a8efcebb105c7242000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000b2b2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bdd077f651ebe7f7b3ce16fe5f2b025be296951600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c3d0afef78a52fd504479dc2af3dc401334762cbd05609c7ac18db9ec5abf4a07a5cc09fc86efd3489707b89b0c729faed616459189cb50084f208d03b201b001f1f0f62ad358d6b319d3c1221d44456080068fe02ae5b1a39b4afb1e6721ca7f9903ac523a801533f265231cd35fc2dfddc3bd9a9563b51315cf9d5ff23dc6d2c221fdf9e4b878877a8dbeee951a4a31ddbf1d3b71e127d5eda44b4730030114baba52e06dd23da37cd2a07a6e84f9950db867374a0f77558f42adf4409bfd569673c1f0000000000000000000000000000000000000000000000000000000000",     "operation": "1",     "safeTxGas": "45746",     "baseGas": "0",     "gasPrice": "0",     "gasToken": "0x0000000000000000000000000000000000000000",     "refundReceiver": "0x0000000000000000000000000000000000000000",     "nonce": "28"   } }`,
       ),
-  },
-  // AAVE
-  benignAaveSupply: {
-    id: 'benignAaveSupply',
-    title: 'Benign Aave Supply',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
-        to: BENIGN_CONTRACT_ADDRESSES.aave,
-        data: '0x617ba037000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000001c9c3800000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d90000000000000000000000000000000000000000000000000000000000000000',
-      }),
-  },
-  benignAaveBorrow: {
-    id: 'benignAaveBorrow',
-    title: 'Benign Aave Borrow',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        to: BENIGN_CONTRACT_ADDRESSES.aave,
-        data: '0xa415bcad0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca000000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
-        value: '0x0',
-        gas: '0x8043b',
-        maxFeePerGas: '0x2faf0800',
-        maxPriorityFeePerGas: '0x2faf0800',
-        nonce: '0x3f',
-      }),
-  },
-
-  benignAaveWithdraw: {
-    id: 'benignAaveWithdraw',
-    title: 'Benign Aave Withdraw',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        to: BENIGN_CONTRACT_ADDRESSES.aave,
-        data: '0x69328dec000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
-        value: '0x0',
-        gas: '0x8043b',
-        maxFeePerGas: '0x2faf0800',
-        maxPriorityFeePerGas: '0x2faf0800',
-        nonce: '0x3f',
-      }),
-  },
-  benignAavePermitStaking: {
-    id: 'benignAavePermitStaking',
-    title: 'Benign Aave Permit (Staking)',
-    onClick: () =>
-      transactionUtils.signTypedData(
-        `{ "types": { "EIP712Domain": [ { "name": "name", "type": "string" }, { "name": "version", "type": "string" }, { "name": "chainId", "type": "uint256" }, { "name": "verifyingContract", "type": "address" } ], "Permit": [ { "name": "owner", "type": "address" }, { "name": "spender", "type": "address" }, { "name": "value", "type": "uint256" }, { "name": "nonce", "type": "uint256" }, { "name": "deadline", "type": "uint256" } ] }, "primaryType": "Permit", "domain": { "name": "Aave token V3", "version": "2", "chainId": "${globalContext.chainIdInt}", "verifyingContract": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9" }, "message": { "owner": "0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9", "spender": "0x4da27a545c0c5b758a6ba100e3a049001de870f5", "value": "100000000000000000", "nonce": "0", "deadline": "1732787332" } }`,
-      ),
-  },
-  benignAaveStaking: {
-    id: 'benignAaveStaking',
-    title: 'Benign Aave Staking (blind)',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        to: BENIGN_CONTRACT_ADDRESSES.aave,
-        data: '0xecd9ba82000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000000000000067483c84000000000000000000000000000000000000000000000000000000000000001cb713bafe29aa71b13b7296f108808f51afa0ba8bcfe1cf0ad375e1d061f873a06407be64d853d33fc16991f4b53a11f0c5ca21d4e0ecce915ec49e9b0eb93cc3',
-        value: '0x0',
-        gas: '0x2c38e',
-        maxFeePerGas: '0x4190ab00',
-        maxPriorityFeePerGas: '0x4190ab00',
-        nonce: '0x3f',
-      }),
-  },
-  // 1INCH
-  benign1InchClassicSwap: {
-    id: 'benign1InchClassicSwap',
-    title: 'Benign 1Inch Classic Swap',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
-        to: '0x111111125421ca6dc452d289314280a0f8842a65',
-        data: '0xd2d374e5000000000000000000000000655edce464cc797526600a462a8154650eee4b77000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000000000000000000000000000000000000034f36fb00000000000000000000000000000000000000000000000000000000034f36fb000000000000005e97facaf5000000000000003b3fb01f8609c409c467dca52560f830342688ccb20bd1048deb6cd8cf3993307b9702fe13c4ee283cce770bdbcf43a96693b198a29bfe945b764a0bc1fcafdfd678b8df4dd6db6a1d061ff574e26b9977',
-        value: '0x0',
-        gas: '0x2c38e',
-        maxFeePerGas: '0x4190ab00',
-        maxPriorityFeePerGas: '0x4190ab00',
-        nonce: '0x3f',
-      }),
-  },
-
-  malicious1InchClassicSwap: {
-    id: 'malicious1InchClassicSwap',
-    title: 'Malicious 1Inch Classic Swap',
-    onClick: () =>
-      transactionUtils.sendTransaction({
-        // to: transactionUtils.getContractAddress(globalContext.networkName, 'malicious'),
-        to: '0x111111125421ca6dc452d289314280a0f8842a65',
-        data: '0xc4d652af000000000000000000000000655edce464cc797526600a462a8154650eee4b770000000000000000000000000fa09c3a328792253f8dee7116848723b72a6d2e000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000000000000000000000000000000000000034f36fb00000000000000000000000000000000000000000000000000000000034f36fb000000000000005f2cea620b000000000000003b3fb01f8609c409c467dca3cd0393dc979d3a13a33006093d972ce054760adf8c216d72200054dca990ab8aa649f86b0f3a7c9fd1811cdd304ad1e437bda4aa117dbb4e72de714fff9f753db8e26b9977',
-        value: '0x0',
-        gas: '0x2c38e',
-        maxFeePerGas: '0x4190ab00',
-        maxPriorityFeePerGas: '0x4190ab00',
-        nonce: '0x3f',
-      }),
   },
 
   maliciousOpenseaMessage: {
@@ -580,6 +622,9 @@ const buttonConfigs = {
   maliciousTransactionBybit: {
     id: 'maliciousTransactionBybit',
     title: 'Malicious Transaction Bybit',
+    signing: 'Blind/Raw Signing',
+    riskLevel: 'Threat',
+    comments: '!!! EIP-712<. Reason: Overwrites Safe mastercopy - full compromise. No legitimate case. Detection: Delegate call to untrusted address. Not flagged by Metamask nor Rabby.',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -659,6 +704,9 @@ const buttonConfigs = {
   maliciousWazirXexploit: {
     id: 'maliciousWazirXexploit',
     title: 'Malicious WazirX Exploit',
+    signing: 'Blind/Raw Signing',
+    riskLevel: 'Threat',
+    comments: '!!! EIP-712<. Reason: Overwrites Safe mastercopy - full compromise. No legitimate case. Detection: Delegate call to untrusted address. Not flagged by Metamask nor Rabby.',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -815,6 +863,9 @@ const buttonConfigs = {
   maliciousIncreaseAllowance: {
     id: 'maliciousIncreaseAllowance',
     title: 'Malicious Increase Allowance',
+    signing: 'Blind/Raw Signing',
+    riskLevel: 'Threat',
+    comments: '!!! Approving an EOA (that isn’t an owner) is unusual, but not always malicious.',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -971,6 +1022,9 @@ const buttonConfigs = {
   maliciousClaim: {
     id: 'maliciousClaim',
     title: 'Malicious Claim',
+    signing: 'Raw Signing',
+    riskLevel: 'Threat',
+    comments: '!!! EIP-712 - Reason: Sends ETH to an empty/non-contract address. Detection: Target has no bytecode and non-zero value - phishing pattern. Not flagged by Metamask.',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -1049,6 +1103,8 @@ const buttonConfigs = {
   benignSend09: {
     id: 'benignSend09',
     title: 'Benign Send (almost all funds)',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: '0x3440378aB3552A3736Da9680507D8583298144Ed',
@@ -1058,6 +1114,8 @@ const buttonConfigs = {
   benignSend06: {
     id: 'benignSend06',
     title: 'Benign Send (60% of funds)',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: '0x3440378aB3552A3736Da9680507D8583298144Ed',
@@ -1067,6 +1125,8 @@ const buttonConfigs = {
   benignSend: {
     id: 'benignSend',
     title: 'Benign Send',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
     onClick: () =>
       transactionUtils.sendTransaction({
         to: '0x3440378aB3552A3736Da9680507D8583298144Ed',
@@ -1075,7 +1135,9 @@ const buttonConfigs = {
   },
   benignUniswapPermitMessage: {
     id: 'benignUniswapPermitMessage',
-    title: 'Benign Uniswap Permit Message',
+    title: 'Uniswap Permit (UniswapX Dutch Order)',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -1239,19 +1301,52 @@ const buttonConfigs = {
 
 // Fonction pour créer un bouton
 function createButton(config) {
+  const buttonContainer = document.createElement('div');
+  buttonContainer.className = 'mb-3';
+
   const button = document.createElement('button');
-  button.className = 'btn btn-primary btn-lg btn-block mb-3';
+  button.className = 'btn btn-primary btn-lg btn-block';
   button.id = config.id;
   button.textContent = config.title;
   button.disabled = true;
-  if (config.tooltip) {
-    button.title = config.tooltip;
+
+  const commentsContainer = document.createElement('div');
+  commentsContainer.className = 'mt-2 small text-muted';
+
+  if (config.signing !== undefined) {
+    const signingText = document.createElement('span');
+    signingText.textContent = `Signing: ${config.signing}`;
+    commentsContainer.appendChild(signingText);
   }
+  
+  if (config.riskLevel) {
+    const riskLevelText = document.createElement('span');
+    riskLevelText.textContent = ` - Risk Level: ${config.riskLevel}`;
+    commentsContainer.appendChild(riskLevelText);
+  }
+
+  if (config.comments) {
+    const commentsText = document.createElement('div');
+    commentsText.textContent = config.comments;
+    commentsContainer.appendChild(commentsText);
+  }
+
+  if (config.tooltip) {
+    const tooltipText = document.createElement('div');
+    tooltipText.textContent = config.tooltip;
+    commentsContainer.appendChild(tooltipText);
+  }
+
+  buttonContainer.appendChild(button);
+  if (commentsContainer.children.length > 0) {
+    buttonContainer.appendChild(commentsContainer);
+  }
+
   if (config.hidden) {
-    button.hidden = true;
+    buttonContainer.hidden = true;
   }
   button.onclick = config.onClick;
-  return button;
+  return buttonContainer;
 }
 
 // Fonction pour créer une section de boutons
@@ -1306,12 +1401,12 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
         'maliciousSafeMessage',
         'maliciousPermit2toEOAMessage',
         'maliciousPermit2toSafeMessage',
+        'maliciousERC20approvaltoanEOA',
+        'maliciousBatchedERC20approval',
         'maliciousTransactionBybit',
         'maliciousWazirXexploit',
-        'maliciousERC20approvaltoanEOA',
-        'maliciousIncreaseAllowance',
-        'maliciousBatchedERC20approval',
         'maliciousClaim',
+        'maliciousIncreaseAllowance',
       ],
     },
     {
@@ -1332,6 +1427,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
         'malicious1InchOrder',
       ],
     },
+    /*
     {
       title: 'Token - ERC 721',
       buttons: [],
@@ -1344,6 +1440,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       title: 'NFT',
       buttons: [],
     },
+    */
     {
       title: 'Paraswap',
       buttons: [],
@@ -1352,6 +1449,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       title: 'Uniswap',
       buttons: ['benignUniswapPermitMessage'],
     },
+    /*
     {
       title: 'Quickswap',
       buttons: [],
@@ -1360,6 +1458,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       title: 'Lido',
       buttons: [],
     },
+    
     {
       title: 'Opensea',
       buttons: ['maliciousOpenseaMessage'],
@@ -1372,6 +1471,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
       title: 'Swap (changelly/Exodus)',
       buttons: [],
     },
+    */
     {
       title: 'Benign Transactions',
       buttons: ['benignSend', 'benignSend06', 'benignSend09'],
