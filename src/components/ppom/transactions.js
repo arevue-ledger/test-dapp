@@ -1133,6 +1133,97 @@ const buttonConfigs = {
         value: '0x8e1bc9bf040000',
       }),
   },
+
+  benignParaswapPermit2TokenApproval: {
+    id: 'benignParaswapPermit2TokenApproval',
+    title: 'Paraswap Delta Permit2 Token Approval (USDC to USDT)',
+    signing: 'Blind / Raw Signing',
+    riskLevel: 'Benign',
+    onClick: () => {
+      transactionUtils.signTypedData(`{
+    "types": {
+        "PermitTransferFrom": [
+            {
+                "name": "permitted",
+                "type": "TokenPermissions"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            }
+        ],
+        "TokenPermissions": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "EIP712Domain": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "chainId",
+                "type": "uint256"
+            },
+            {
+                "name": "verifyingContract",
+                "type": "address"
+            }
+        ]
+    },
+    "domain": {
+        "name": "Permit2",
+        "chainId": "1",
+        "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+    },
+    "primaryType": "PermitTransferFrom",
+    "message": {
+        "permitted": {
+            "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "amount": "55523067"
+        },
+        "spender": "0x0000000000bbf5c5fd284e657f01bd000933c96d",
+        "nonce": "0",
+        "deadline": "1744668435"
+    }
+    }`)
+    }
+  },
+
+  benignParaswapWrapEth: {
+    id: 'benignParaswapWrapEth',
+    title: 'Paraswap Wrap ETH (ETH to DAI)',
+    signing: 'Blind Signing',
+    riskLevel: 'Benign',
+    onClick: () => {
+      transactionUtils.sendTransaction({
+        chainId: 1,
+        from: '0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+        to: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        value: '0x6a94d74f430000',
+        data: '0xd0e30db0',
+        gas: '0x10a1f',
+        maxFeePerGas: '0x23c34600',
+        maxPriorityFeePerGas: '0x23c34600',
+        nonce: '0x40'
+      })
+    }
+  },
+
   benignUniswapPermitMessage: {
     id: 'benignUniswapPermitMessage',
     title: 'Uniswap Permit (UniswapX Dutch Order)',
@@ -1297,6 +1388,101 @@ const buttonConfigs = {
       }
     }`),
   },
+  benignUniswapPermit2TokenApproval: {
+    id: 'benignUniswapPermit2TokenApproval',
+    title: 'Uniswap Permit2 Token Approval (V4)',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.signTypedData(
+        `{
+          "types": {
+              "PermitSingle": [
+                  {
+                      "name": "details",
+                      "type": "PermitDetails"
+                  },
+                  {
+                      "name": "spender",
+                      "type": "address"
+                  },
+                  {
+                      "name": "sigDeadline",
+                      "type": "uint256"
+                  }
+              ],
+              "PermitDetails": [
+                  {
+                      "name": "token",
+                      "type": "address"
+                  },
+                  {
+                      "name": "amount",
+                      "type": "uint160"
+                  },
+                  {
+                      "name": "expiration",
+                      "type": "uint48"
+                  },
+                  {
+                      "name": "nonce",
+                      "type": "uint48"
+                  }
+              ],
+              "EIP712Domain": [
+                  {
+                      "name": "name",
+                      "type": "string"
+                  },
+                  {
+                      "name": "chainId",
+                      "type": "uint256"
+                  },
+                  {
+                      "name": "verifyingContract",
+                      "type": "address"
+                  }
+              ]
+          },
+          "domain": {
+              "name": "Permit2",
+              "chainId": "1",
+              "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+          },
+          "primaryType": "PermitSingle",
+          "message": {
+              "details": {
+                  "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                  "amount": "1461501637330902918203684832716283019655932542975",
+                  "expiration": "1747255467",
+                  "nonce": "0"
+              },
+              "spender": "0x66a9893cc07d91d95644aedd05d03f95e1dba8af",
+              "sigDeadline": "1744665267"
+          }
+        }`,
+      ),
+  },
+
+  benignUniswapSwapV4: {
+    id: 'benignUniswapSwapV4',
+    title: 'Uniswap Swap (V4) 55 USDC to USDT',
+    signing: 'Clear Signing',
+    riskLevel: 'Benign',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        chainId: 1,
+        from: '0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+        to: '0x66a9893cc07d91d95644aedd05d03f95e1dba8af',
+        value: '0x0',
+        data: '0x3593564c000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000067fd7cc200000000000000000000000000000000000000000000000000000000000000020a100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000160000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000ffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000068250282000000000000000000000000000000000000000000000000000000000000000000000000000000000000000066a9893cc07d91d95644aedd05d03f95e1dba8af0000000000000000000000000000000000000000000000000000000067fd7c8a00000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000041f291874f784d9f83d1902ecc95d6932e4fe61e89a2be17143e5be7e40e21123f04e6e411b2944d0e8ee8c9db580057b527b8cc81aa303dc790f48df8061fb9da1b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c0000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000003070b0e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000022000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000001a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000034f36fb00000000000000000000000000000000000000000000000000000000034b0c2c00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000060000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec70000000000000000000000006535d5f76f021fe65e2ac73d086df4b4bd7ee5d900000000000000000000000000000000000000000000000000000000000000000c',
+        gas: '0x43cda',
+        maxFeePerGas: '0x29b92700',
+        maxPriorityFeePerGas: '0x29b92700',
+        nonce: '0x40',
+    }),
+  },
+
   interactionWithPoisonAddress: {
     id: 'interactionWithPoisonAddress',
     title: 'Interaction with Poison Address',
@@ -1481,11 +1667,15 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     */
     {
       title: 'Paraswap',
-      buttons: [],
+      buttons: ['benignParaswapPermit2TokenApproval', 'benignParaswapWrapEth'],
     },
     {
       title: 'Uniswap',
-      buttons: ['benignUniswapPermitMessage'],
+      buttons: [
+        'benignUniswapPermitMessage',
+        'benignUniswapPermit2TokenApproval',
+        'benignUniswapSwapV4',
+      ],
     },
     /*
     {
