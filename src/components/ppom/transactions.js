@@ -865,7 +865,7 @@ const buttonConfigs = {
     title: 'Malicious Increase Allowance',
     signing: 'Blind/Raw Signing',
     riskLevel: 'Threat',
-    comments: '!!! Approving an EOA (that isn’t an owner) is unusual, but not always malicious.',
+    comments: '!!! Approving an EOA (that isn t an owner) is unusual, but not always malicious.',
     onClick: () =>
       transactionUtils.signTypedData(`{
       "types": {
@@ -1342,7 +1342,7 @@ function createButton(config) {
   buttonContainer.className = 'mb-3';
 
   const button = document.createElement('button');
-  button.className = 'btn btn-primary btn-lg btn-block';
+  button.className = 'btn btn-primary btn-lg btn-block w-100 py-2 py-md-3';
   button.id = config.id;
   button.textContent = config.title;
   button.disabled = true;
@@ -1389,7 +1389,8 @@ function createButton(config) {
 // Fonction pour créer une section de boutons
 function createButtonSection(title, buttonIds) {
   const section = document.createElement('div');
-  section.innerHTML = `<h5>${title}</h5>`;
+  section.className = 'mb-4';
+  section.innerHTML = `<h5 class="h6 h5-md mb-3">${title}</h5>`;
   buttonIds.forEach((id) => {
     const config = buttonConfigs[id];
     if (config) {
@@ -1406,9 +1407,9 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     'col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 d-flex align-items-stretch';
   container.innerHTML = `
     <div class="card full-width">
-      <div class="card-body">
-        <h4 class="card-title">PPOM - Malicious Transactions and Signatures</h4>
-        <p>We know we are vulnerable if any of these Transactions/Signatures are not flagged as Malicious</p>
+      <div class="card-body p-3 p-md-4">
+        <h4 class="card-title h5 h4-md mb-3">PPOM - Malicious Transactions and Signatures</h4>
+        <p class="mb-4">We know we are vulnerable if any of these Transactions/Signatures are not flagged as Malicious</p>
       </div>
     </div>
   `;
