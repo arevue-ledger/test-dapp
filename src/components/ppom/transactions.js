@@ -1133,6 +1133,97 @@ const buttonConfigs = {
         value: '0x8e1bc9bf040000',
       }),
   },
+
+  benignParaswapPermit2TokenApproval: {
+    id: 'benignParaswapPermit2TokenApproval',
+    title: 'Paraswap Delta Permit2 Token Approval (USDC to USDT)',
+    signing: 'Blind / Raw Signing',
+    riskLevel: 'Benign',
+    onClick: () => {
+      transactionUtils.signTypedData(`{
+    "types": {
+        "PermitTransferFrom": [
+            {
+                "name": "permitted",
+                "type": "TokenPermissions"
+            },
+            {
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            }
+        ],
+        "TokenPermissions": [
+            {
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "EIP712Domain": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "chainId",
+                "type": "uint256"
+            },
+            {
+                "name": "verifyingContract",
+                "type": "address"
+            }
+        ]
+    },
+    "domain": {
+        "name": "Permit2",
+        "chainId": "1",
+        "verifyingContract": "0x000000000022d473030f116ddee9f6b43ac78ba3"
+    },
+    "primaryType": "PermitTransferFrom",
+    "message": {
+        "permitted": {
+            "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "amount": "55523067"
+        },
+        "spender": "0x0000000000bbf5c5fd284e657f01bd000933c96d",
+        "nonce": "0",
+        "deadline": "1744668435"
+    }
+    }`)
+    }
+  },
+
+  benignParaswapWrapEth: {
+    id: 'benignParaswapWrapEth',
+    title: 'Paraswap Wrap ETH (ETH to DAI)',
+    signing: 'Blind Signing',
+    riskLevel: 'Benign',
+    onClick: () => {
+      transactionUtils.sendTransaction({
+        chainId: 1,
+        from: '0x6535d5f76f021fe65e2ac73d086df4b4bd7ee5d9',
+        to: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+        value: '0x6a94d74f430000',
+        data: '0xd0e30db0',
+        gas: '0x10a1f',
+        maxFeePerGas: '0x23c34600',
+        maxPriorityFeePerGas: '0x23c34600',
+        nonce: '0x40'
+      })
+    }
+  },
+
   benignUniswapPermitMessage: {
     id: 'benignUniswapPermitMessage',
     title: 'Uniswap Permit (UniswapX Dutch Order)',
@@ -1576,7 +1667,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     */
     {
       title: 'Paraswap',
-      buttons: [],
+      buttons: ['benignParaswapPermit2TokenApproval', 'benignParaswapWrapEth'],
     },
     {
       title: 'Uniswap',
