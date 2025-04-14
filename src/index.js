@@ -159,8 +159,11 @@ const ppomRow = document.createElement('div');
 ppomRow.className = 'row';
 ppomSection.appendChild(ppomRow);
 ppomMaliciousTransactionsAndSignatures(ppomRow);
+
+/*
 ppomMaliciousBatchingAndQueueing(ppomRow);
 ppomMaliciousWarningBypasses(ppomRow);
+*/
 
 const connectionsSection = document.createElement('section');
 mainContainer.appendChild(connectionsSection);
@@ -168,13 +171,14 @@ const connectionsRow = document.createElement('div');
 connectionsRow.className = 'row d-flex justify-content-center';
 connectionsSection.appendChild(connectionsRow);
 connectionsComponent(connectionsRow);
-permissionsComponent(connectionsRow);
+// permissionsComponent(connectionsRow);
 
 // Connection buttons set up by this file
 const onboardButton = document.getElementById('connectButton');
 const walletConnectBtn = document.getElementById('walletConnect');
 const sdkConnectBtn = document.getElementById('sdkConnect');
 
+/*
 const transactionsSection = document.createElement('section');
 mainContainer.appendChild(transactionsSection);
 const transactionsRow = document.createElement('div');
@@ -206,7 +210,9 @@ signTypedDataVariantsComponent(signaturesRow);
 siweComponent(signaturesRow);
 malformedSignaturesComponent(signaturesRow);
 malformedTransactionsComponent(signaturesRow);
+*/
 
+/*
 const interactionsSection = document.createElement('section');
 mainContainer.appendChild(interactionsSection);
 const interactionsRow = document.createElement('div');
@@ -223,6 +229,7 @@ sendFormComponent(sendSection);
 const resolutionsSection = document.createElement('section');
 mainContainer.appendChild(resolutionsSection);
 ensResolutionComponent(resolutionsSection);
+*/
 
 /**
  * Provider
