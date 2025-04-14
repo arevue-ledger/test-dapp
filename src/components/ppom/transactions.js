@@ -1297,6 +1297,43 @@ const buttonConfigs = {
       }
     }`),
   },
+  interactionWithPoisonAddress: {
+    id: 'interactionWithPoisonAddress',
+    title: 'Interaction with Poison Address',
+    signing: 'Blind Signing',
+    riskLevel: 'Threat',
+    onClick: () => {
+      transactionUtils.sendTransaction({
+        to: '0x12345f7623CC69f0a1175426b957Db268b5Faf3A',
+        value: '0',
+        gasLimit: '40000',
+        gasPrice: '392204216',
+        maxPriorityFeePerGas: '2000000000',
+        maxFeePerGas: '2783673432',
+        nonce: '811525',
+        chainId: '1',
+        data: '0x87517c45000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000066a9893cc07d91d95644aedd05d03f95e1dba8af00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001'
+      });
+    }
+  },
+  interactionWithKMC: { 
+    id: 'interactionWithKMC',
+    title: 'Interaction with KMC',
+    signing: 'Blind Signing',
+    riskLevel: 'Threat',
+    onClick: () =>
+      transactionUtils.sendTransaction({
+        to: '0x96221423681A6d52E184D440a8eFCEbB105C7242',
+        value: '0',
+        gasLimit: '40000',
+        gasPrice: '427312331',
+        maxPriorityFeePerGas: '2000000000',
+        maxFeePerGas: '2853889662',
+        nonce: '811525',
+        chainId: '1',
+        data: '0xa9059cbb0000000000000000000000001f9090aae28b8a3dceadf281b0f12828e676c3260000000000000000000000000000000000000000000000056bc75e2d63100000'
+      }),
+  },
 };
 
 // Fonction pour créer un bouton
@@ -1475,6 +1512,10 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
     {
       title: 'Benign Transactions',
       buttons: ['benignSend', 'benignSend06', 'benignSend09'],
+    },
+    {
+      title: 'Other',
+      buttons: ['interactionWithPoisonAddress', 'interactionWithKMC'],
     },
   ];
 
