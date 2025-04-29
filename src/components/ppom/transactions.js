@@ -701,6 +701,90 @@ const buttonConfigs = {
     }`),
   },
 
+  maliciousTransactionBybit_01: {
+    id: 'maliciousTransactionBybit_01',
+    title: 'Malicious Transaction Bybit 01',
+    signing: 'Blind/Raw Signing',
+    riskLevel: 'Threat',
+    comments: '!!! EIP-712<. Reason: Overwrites Safe mastercopy - full compromise. No legitimate case. Detection: Delegate call to untrusted address. Not flagged by Metamask nor Rabby.',
+    onClick: () =>
+      transactionUtils.signTypedData(`
+        {
+            "types": {
+                "EIP712Domain": [
+                    {
+                        "name": "chainId",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "verifyingContract",
+                        "type": "address"
+                    }
+                ],
+                "SafeTx": [
+                    {
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "name": "value",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "data",
+                        "type": "bytes"
+                    },
+                    {
+                        "name": "operation",
+                        "type": "uint8"
+                    },
+                    {
+                        "name": "safeTxGas",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "baseGas",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "gasPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "gasToken",
+                        "type": "address"
+                    },
+                    {
+                        "name": "refundReceiver",
+                        "type": "address"
+                    },
+                    {
+                        "name": "nonce",
+                        "type": "uint256"
+                    }
+                ]
+            },
+            "domain": {
+                "chainId": 1,
+                "verifyingContract": "0x91480c26C598CD8231951Fc9beE6e48DE2Fb683F"
+            },
+            "primaryType": "SafeTx",
+            "message": {
+                "to": "0x940FE3E333ABf4Bc1C19dB0652Aef3527B18Ad74",
+                "value": 0,
+                "data": "0xa9059cbb0000000000000000000000007a986ee0f09b6ab5b342e4c2316348256119a8bf0000000000000000000000000000000000000000000000000000000000000000",
+                "operation": 1,
+                "safeTxGas": 45746,
+                "baseGas": 0,
+                "gasPrice": 0,
+                "gasToken": "0x0000000000000000000000000000000000000000",
+                "refundReceiver": "0x0000000000000000000000000000000000000000",
+                "nonce": 0
+            }
+
+    }`),
+  },
+
   maliciousWazirXexploit: {
     id: 'maliciousWazirXexploit',
     title: 'Malicious WazirX Exploit',
@@ -1628,6 +1712,7 @@ export function ppomMaliciousTransactionsAndSignatures(parentContainer) {
         'maliciousERC20approvaltoanEOA',
         'maliciousBatchedERC20approval',
         'maliciousTransactionBybit',
+        'maliciousTransactionBybit_01',
         'maliciousWazirXexploit',
         'maliciousClaim',
         'maliciousIncreaseAllowance',
